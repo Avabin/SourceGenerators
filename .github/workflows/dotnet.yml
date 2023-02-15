@@ -22,7 +22,7 @@ jobs:
         dotnet-version: 7.0.x
     - name: restore
       run: |
-        dotnet restore -c Release
+        dotnet restore
     - name: build
       run: |
         dotnet build --no-restore -c Release
