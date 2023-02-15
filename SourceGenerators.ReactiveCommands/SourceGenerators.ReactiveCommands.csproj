@@ -18,6 +18,8 @@
         <PackageVersion>1.0.0</PackageVersion>
         <PackageId>SourceGenerators.ReactiveCommands</PackageId>
         <Version>1.0.0</Version>
+        <Description>Source generator to generate ReactiveCommands from methods</Description>
+        <Authors>Avabin</Authors>
     </PropertyGroup>
 
 </Project>
