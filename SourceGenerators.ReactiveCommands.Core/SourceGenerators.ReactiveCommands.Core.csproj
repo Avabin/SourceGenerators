@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,8 +16,8 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/Avabin/SourceGenerators</PackageProjectUrl>
         <PackageId>SourceGenerators.ReactiveCommands.Core</PackageId>
-        <Version>1.0.1</Version>
-        <PackageVersion>1.0.1</PackageVersion>
+        <Version>1.0.2</Version>
+        <PackageVersion>1.0.2</PackageVersion>
         <Description>Core package containing ReactiveCommand attribute</Description>
         <Authors>Avabin</Authors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
