@@ -22,10 +22,13 @@ jobs:
         dotnet-version: 7.0.x
     - name: restore
       run: |
-        dotnet restore
+        dotnet restore -c Release
     - name: build
       run: |
-        dotnet build --no-restore
+        dotnet build --no-restore -c Release
+    - name: pack
+      run: |
+        dotnet pack --no-build --no-restore -c Release
     - name: push NuGet.org
       run: |
         dotnet nuget push **/*nupkg --api-key ${{ secrets.NUGET_TOKEN }} --source https://api.nuget.org/v3/index.json
