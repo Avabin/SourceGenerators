@@ -16,19 +16,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
     - name: restore
       run: |
         dotnet restore
     - name: build
       run: |
         dotnet build --no-restore -c Release
-    - name: pack
-      run: |
-        dotnet pack --no-build --no-restore -c Release
     - name: push NuGet.org
       run: |
         for file in **/*.nupkg
