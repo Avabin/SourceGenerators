@@ -19,17 +19,17 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
-    - name: Publish NuGet
-      # You may pin to the exact commit or the version.
-      # uses: brandedoutcast/publish-nuget@c12b8546b67672ee38ac87bea491ac94a587f7cc
-      uses: brandedoutcast/publish-nuget@v2.5.5
-      with:
-        # Filepath of the project to be packaged, relative to root of repository
-        PROJECT_FILE_PATH: SourceGenerators.ReactiveCommands*/SourceGenerators.ReactiveCommands*.csproj
-        # NuGet package id, used for version detection & defaults to project name
-        PACKAGE_NAME: SourceGenerators.ReactiveCommands
-        # API key to authenticate with NuGet server
-        NUGET_KEY: ${{ secrets.NUGET_TOKEN }}
-        # Flag to toggle pushing symbols along with nuget package to the server, disabled by default
-        INCLUDE_SYMBOLS: true
+        dotnet-version: 7.0.x
+    - name: restore
+      run: |
+        dotnet restore
+    - name: build
+      run: |
+        dotnet build --no-restore
+    - name: push NuGet.org
+      run: |
+        dotnet nuget push **/*nupkg --api-key ${{ secrets.NUGET_TOKEN }} --source https://api.nuget.org/v3/index.json
+    - name: push github.com
+      run: |
+        dotnet nuget push **/*nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/Avabin/index.json
+      
