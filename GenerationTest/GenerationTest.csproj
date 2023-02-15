@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SourceGenerators.ReactiveCommands.Core\SourceGenerators.ReactiveCommands.Core.csproj" />
+      <ProjectReference Include="..\SourceGenerators.ReactiveCommands\SourceGenerators.ReactiveCommands.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="ReactiveUI" Version="18.4.20" />
+    </ItemGroup>
+
+</Project>
