@@ -7,6 +7,8 @@ namespace SourceGenerators.ReactiveCommands;
 public static class ReactiveCommandTemplate
 {
     private static readonly Regex TaskRegex = new(@"Task<(?<TResult>.*)>");
+    // IObservable<T> regex
+    private static readonly Regex ObservableRegex = new(@"IObservable<(?<TResult>.*)>");
     private const string ClassTemplate = """
                             using System;
                             using System.Reactive;
@@ -22,34 +24,35 @@ public static class ReactiveCommandTemplate
                             """;
 
     // async reactive command with one parameter and return type
-    private const string CommandFromAsyncWithParamAndReturnTemplate = """
-public ReactiveUI.ReactiveCommand<{TParam}, {TResult}> {MethodName}Command => ReactiveUI.ReactiveCommand.CreateFromTask<{TParam}, {TResult}>({MethodName}Async);
-""";
+    private const string FromAsyncWithParamAndReturnTemplate = "public ReactiveUI.ReactiveCommand<{TParam}, {TResult}> {MethodName}Command => ReactiveUI.ReactiveCommand.CreateFromTask<{TParam}, {TResult}>({MethodName}Async);";
 
     // async reactive command with one parameter (no return type)
-    private const string CommandFromAsyncWithParamNoReturnTemplate = """
-public ReactiveUI.ReactiveCommand<{TParam}, Unit> {MethodName}Command => ReactiveUI.ReactiveCommand.CreateFromTask<{TParam}>({MethodName}Async);
-""";
+    private const string FromAsyncWithParamNoReturnTemplate = "public ReactiveUI.ReactiveCommand<{TParam}, Unit> {MethodName}Command => ReactiveUI.ReactiveCommand.CreateFromTask<{TParam}>({MethodName}Async);";
     // async reactive command without params (no param, but with return type)
-    private const string CommandFromAsyncNoParamWithReturnTemplate = """
-public ReactiveUI.ReactiveCommand<Unit, {TResult}> {MethodName}Command => ReactiveUI.ReactiveCommand.CreateFromTask({MethodName}Async);
-""";
+    private const string FromAsyncNoParamWithReturnTemplate = "public ReactiveUI.ReactiveCommand<Unit, {TResult}> {MethodName}Command => ReactiveUI.ReactiveCommand.CreateFromTask({MethodName}Async);";
+    // async reactive command without params (no param, no return type)
+    private const string FromAsyncNoParamNoReturnTemplate = "public ReactiveUI.ReactiveCommand<Unit, Unit> {MethodName}Command => ReactiveUI.ReactiveCommand.CreateFromTask({MethodName}Async);";
+    
+    // IObservable<Unit> reactive command without params (no param, no return type)
+    private const string FromObservableNoParamNoReturnTemplate = "public ReactiveUI.ReactiveCommand<Unit, Unit> {MethodName}Command => ReactiveUI.ReactiveCommand.CreateFromObservable({MethodName});";
+    
+    // IObservable<TParam> reactive command with params (no return type)
+    private const string FromObservableWithParamNoReturnTemplate = "public ReactiveUI.ReactiveCommand<{TParam}, Unit> {MethodName}Command => ReactiveUI.ReactiveCommand.CreateFromObservable<{TParam}>({MethodName});";
+    
+    // IObservable<TParam> reactive command with params and return type
+    private const string FromObservableWithParamAndReturnTemplate = "public ReactiveUI.ReactiveCommand<{TParam}, {TResult}> {MethodName}Command => ReactiveUI.ReactiveCommand.CreateFromObservable<{TParam}, {TResult}>({MethodName});";
+    
+    // IObservable<TParam> reactive command with no params and return type
+    private const string FromObservableNoParamWithReturnTemplate = "public ReactiveUI.ReactiveCommand<Unit, {TResult}> {MethodName}Command => ReactiveUI.ReactiveCommand.CreateFromObservable<{TResult}>({MethodName});";
+    
     // ReactiveCommand without params (no param, no return type)
-    private const string CommandFromNoParamNoReturnTemplate = """
-public ReactiveUI.ReactiveCommand<Unit, Unit> {MethodName}Command => ReactiveUI.ReactiveCommand.Create({MethodName});
-""";
+    private const string FromNoParamNoReturnTemplate = "public ReactiveUI.ReactiveCommand<Unit, Unit> {MethodName}Command => ReactiveUI.ReactiveCommand.Create({MethodName});";
     // ReactiveCommand with params (no return type) no async
-    private const string CommandFromParamNoReturnTemplate = """
-public ReactiveUI.ReactiveCommand<{TParam}, Unit> {MethodName}Command => ReactiveUI.ReactiveCommand.Create<{TParam}, Unit>({MethodName});
-""";
+    private const string FromParamNoReturnTemplate = "public ReactiveUI.ReactiveCommand<{TParam}, Unit> {MethodName}Command => ReactiveUI.ReactiveCommand.Create<{TParam}, Unit>({MethodName});";
     // return-only reactive command
-    private const string CommandFromNoParamWithReturnTemplate = """
-public ReactiveUI.ReactiveCommand<Unit, {TResult}> {MethodName}Command => ReactiveUI.ReactiveCommand.Create({MethodName});
-""";
+    private const string FromNoParamWithReturnTemplate = "public ReactiveUI.ReactiveCommand<Unit, {TResult}> {MethodName}Command => ReactiveUI.ReactiveCommand.Create({MethodName});";
     // ReactiveCommand with param and return type
-    private const string CommandFromWithParamAndReturnTemplate = """
-public ReactiveUI.ReactiveCommand<{TParam}, {TResult}> {MethodName}Command => ReactiveUI.ReactiveCommand.Create<{TParam}, {TResult}>({MethodName});
-""";
+    private const string FromWithParamAndReturnTemplate = "public ReactiveUI.ReactiveCommand<{TParam}, {TResult}> {MethodName}Command => ReactiveUI.ReactiveCommand.Create<{TParam}, {TResult}>({MethodName});";
 
     /// <summary>
     /// Render a property for a ReactiveCommand
@@ -62,7 +65,7 @@ public ReactiveUI.ReactiveCommand<{TParam}, {TResult}> {MethodName}Command => Re
     {
         var isAsync = methodName.EndsWith("Async"); // check if method is async
         var hasParams = tParam is not ("Unit" or ""); // check if method has params
-        var hasResult = tResult is not ("Unit" or "" or "Task<Unit>"); // check if method has return type
+        var hasResult = tResult is not ("Unit" or "void" or "" or "Task<Unit>" or "Task"); // check if method has return type
         methodName = isAsync ? methodName.Substring(0, methodName.Length - 5) : methodName; // remove Async suffix
         if (isAsync && hasResult)
         {
@@ -71,20 +74,44 @@ public ReactiveUI.ReactiveCommand<{TParam}, {TResult}> {MethodName}Command => Re
                 ? match.Groups["TResult"].Value  // if Task<> is used
                 : "Unit"; // if Task is used
         }
-
-        var template = (isAsync, hasParams, hasResult) switch
+        
+        var isIObservable = tResult.StartsWith("IObservable");
+        if (isIObservable)
         {
-            (true, true, true) => CommandFromAsyncWithParamAndReturnTemplate,
-            (true, true, false) => CommandFromAsyncWithParamNoReturnTemplate,
-            (true, false, true) => CommandFromAsyncNoParamWithReturnTemplate,
-            (true, false, false) => CommandFromNoParamNoReturnTemplate,
-            (false, true, false) => CommandFromParamNoReturnTemplate,
-            (false, false, true) => CommandFromNoParamWithReturnTemplate,
-            (false, true, true) => CommandFromWithParamAndReturnTemplate,
-            _ => ""
+            tResult = ObservableRegex.Match(tResult).Groups["TResult"].Value;
+            if (tResult is "Unit")
+            {
+                hasResult = false;
+            }
+            else
+            {
+                hasResult = true;
+            }
+                
+        }
+
+        
+        var template = (isIObservable, isAsync, hasParams, hasResult) switch
+        {
+            (false, true, true, true) => FromAsyncWithParamAndReturnTemplate,
+            (false, true, true, false) => FromAsyncWithParamNoReturnTemplate,
+            (false, true, false, true) => FromAsyncNoParamWithReturnTemplate,
+            (false, true, false, false) => FromAsyncNoParamNoReturnTemplate,
+            (false, false, false, false) => FromNoParamNoReturnTemplate,
+            (false, false, true, false) => FromParamNoReturnTemplate,
+            (false, false, false, true) => FromNoParamWithReturnTemplate,
+            (false, false, true, true) => FromWithParamAndReturnTemplate,
+            (true, false, false, false) => FromObservableNoParamNoReturnTemplate,
+            (true, false, false, true) => FromObservableNoParamWithReturnTemplate,
+            (true, false, true, false) => FromObservableWithParamNoReturnTemplate,
+            (true, false, true, true) => FromObservableWithParamAndReturnTemplate,
+            _ => throw new ArgumentOutOfRangeException()
         };
         if (template is "")
             Debugger.Break(); // this should never happen
+        // if return type is 'void' then change it to 'Unit'
+        if (tResult == "void")
+            tResult = "Unit";
         return new StringBuilder(template) // replace placeholders
             .Replace("{TParam}", tParam)
             .Replace("{TResult}", tResult)
@@ -104,9 +131,14 @@ public ReactiveUI.ReactiveCommand<{TParam}, {TResult}> {MethodName}Command => Re
         // measure indent using class template
         // indent is the space between the line start and the {Properties} placeholder
         // template is multiline, so we need to find the line with the placeholder
-        var indentLength = ClassTemplate.Split(Environment.NewLine.ToArray())
-            .First(line => line.Contains("{Properties}"))
-            .IndexOf("{Properties}", StringComparison.Ordinal);
+        var unixNewLine = new[] {"\n"};
+        var windowsNewLine = new[] {"\r\n"};
+        
+        var isWindows = ClassTemplate.Contains(windowsNewLine[0]);
+        
+        var indentLength = (isWindows ? ClassTemplate.Split(windowsNewLine, StringSplitOptions.RemoveEmptyEntries)
+            : ClassTemplate.Split(unixNewLine, StringSplitOptions.RemoveEmptyEntries)
+        ).First(line => line.Contains("{Properties}")).IndexOf('{'); // find line with placeholder
         var indent = new string(' ', indentLength); // create indent string
         // indent all properties and trim the first property as it's already indented
         var propertiesIndented = properties // for each property

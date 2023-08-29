@@ -12,13 +12,18 @@
       <PackageReference Include="ReactiveUI" Version="18.4.20" />
       <PackageReference Include="SourceGenerators.ReactiveCommands.Core" Version="1.0.3" />
     </ItemGroup>
-    
+    <PropertyGroup>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    </ItemGroup>
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/Avabin/SourceGenerators</PackageProjectUrl>
         <PackageId>SourceGenerators.ReactiveCommands</PackageId>
-        <Version>1.0.4</Version>
-        <PackageVersion>1.0.4</PackageVersion>
+        <Version>1.0.10</Version>
+        <PackageVersion>1.0.10</PackageVersion>
         <Description>Source generator to generate ReactiveCommands from methods</Description>
         <Authors>Avabin</Authors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

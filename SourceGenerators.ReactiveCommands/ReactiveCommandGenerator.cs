@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -14,7 +13,7 @@ public class ReactiveCommandGenerator : ISourceGenerator
         if (!Debugger.IsAttached)
         {
             // uncomment this line to debug the generator
-            // Debugger.Launch();
+            Debugger.Launch();
         }
 #endif
     }
@@ -57,11 +56,11 @@ public class ReactiveCommandGenerator : ISourceGenerator
                 var methodName = m.Identifier.Text; // get method name
                 var tParam = m.ParameterList.Parameters.FirstOrDefault()?.Type?.ToString() ?? "Unit"; // get TParam
                 var isAsync = methodName.EndsWith("Async"); // check if method is async
-                var tResult = m.ReturnType?.ToString() ?? (isAsync ? "Task<Unit>" : "Unit"); // get TResult and default to Task<Unit> if method is async
+                var tResult = m.ReturnType?.ToString() ?? (isAsync ? "Task" : "Unit"); // get TResult and default to Task if method is async
                 return ReactiveCommandTemplate.RenderProperty(methodName, tParam, tResult); // render property
             });
             var source = ReactiveCommandTemplate.RenderClass(ns, className, properties); // render class with properties
-            context.AddSource($"{className}.ReactiveCommand.cs", source); // add source file to compilation
+            context.AddSource($"{className}.ReactiveCommands.cs", source); // add source file to compilation
         }
     }
 }
