@@ -14,6 +14,7 @@ public static class ReactiveCommandTemplate
                             using System.Reactive;
                             using System.Threading.Tasks;
                             using ReactiveUI;
+                            {Imports}
                             namespace {Namespace}
                             {
                                 public partial class {ClassName}
@@ -48,7 +49,7 @@ public static class ReactiveCommandTemplate
     // ReactiveCommand without params (no param, no return type)
     private const string FromNoParamNoReturnTemplate = "public ReactiveUI.ReactiveCommand<Unit, Unit> {MethodName}Command => ReactiveUI.ReactiveCommand.Create({MethodName});";
     // ReactiveCommand with params (no return type) no async
-    private const string FromParamNoReturnTemplate = "public ReactiveUI.ReactiveCommand<{TParam}, Unit> {MethodName}Command => ReactiveUI.ReactiveCommand.Create<{TParam}, Unit>({MethodName});";
+    private const string FromParamNoReturnTemplate = "public ReactiveUI.ReactiveCommand<{TParam}, Unit> {MethodName}Command => ReactiveUI.ReactiveCommand.Create<{TParam}>({MethodName});";
     // return-only reactive command
     private const string FromNoParamWithReturnTemplate = "public ReactiveUI.ReactiveCommand<Unit, {TResult}> {MethodName}Command => ReactiveUI.ReactiveCommand.Create({MethodName});";
     // ReactiveCommand with param and return type
@@ -126,7 +127,7 @@ public static class ReactiveCommandTemplate
     /// <param name="className">Source class name</param>
     /// <param name="properties">Properties to render</param>
     /// <returns>Rendered class</returns>
-    public static string RenderClass(string ns, string className, IEnumerable<string> properties)
+    public static string RenderClass(string ns, string className, IEnumerable<string> properties, IEnumerable<string> imports)
     {
         // measure indent using class template
         // indent is the space between the line start and the {Properties} placeholder
@@ -151,6 +152,7 @@ public static class ReactiveCommandTemplate
         
         return new StringBuilder(ClassTemplate) // replace placeholders
             .Replace("{Namespace}", ns)
+            .Replace("{Imports}", string.Join(isWindows ? "\r\n" : "\n", imports))
             .Replace("{ClassName}", className)
             .Replace("{Properties}", propsSb.ToString())
             .ToString();

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -51,6 +52,10 @@ public class ReactiveCommandGenerator : ISourceGenerator
             var methods = classWithReactiveCommand.DescendantNodes().OfType<MethodDeclarationSyntax>()
                 .Where(m => m.AttributeLists.Any(a =>
                     a.Attributes.Any(at => at.Name.ToString().StartsWith("ReactiveCommand"))));
+            var imports = classWithReactiveCommand.Ancestors().OfType<CompilationUnitSyntax>().First()
+                .Usings.Select(u => u.ToString());
+            // get all imports from the class
+
             var properties = methods.Select(m => // for every method
             {
                 var methodName = m.Identifier.Text; // get method name
@@ -59,7 +64,7 @@ public class ReactiveCommandGenerator : ISourceGenerator
                 var tResult = m.ReturnType?.ToString() ?? (isAsync ? "Task" : "Unit"); // get TResult and default to Task if method is async
                 return ReactiveCommandTemplate.RenderProperty(methodName, tParam, tResult); // render property
             });
-            var source = ReactiveCommandTemplate.RenderClass(ns, className, properties); // render class with properties
+            var source = ReactiveCommandTemplate.RenderClass(ns, className, properties, imports); // render class with properties
             context.AddSource($"{className}.ReactiveCommands.cs", source); // add source file to compilation
         }
     }
