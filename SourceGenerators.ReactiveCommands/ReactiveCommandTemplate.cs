@@ -38,7 +38,7 @@ public static class ReactiveCommandTemplate
     private const string FromObservableNoParamNoReturnTemplate = "public ReactiveUI.ReactiveCommand<Unit, Unit> {MethodName}Command => ReactiveUI.ReactiveCommand.CreateFromObservable({MethodName});";
     
     // IObservable<TParam> reactive command with params (no return type)
-    private const string FromObservableWithParamNoReturnTemplate = "public ReactiveUI.ReactiveCommand<{TParam}, Unit> {MethodName}Command => ReactiveUI.ReactiveCommand.CreateFromObservable<{TParam}>({MethodName});";
+    private const string FromObservableWithParamNoReturnTemplate = "public ReactiveUI.ReactiveCommand<{TParam}, Unit> {MethodName}Command => ReactiveUI.ReactiveCommand.CreateFromObservable<{TParam}, Unit>({MethodName});";
     
     // IObservable<TParam> reactive command with params and return type
     private const string FromObservableWithParamAndReturnTemplate = "public ReactiveUI.ReactiveCommand<{TParam}, {TResult}> {MethodName}Command => ReactiveUI.ReactiveCommand.CreateFromObservable<{TParam}, {TResult}>({MethodName});";

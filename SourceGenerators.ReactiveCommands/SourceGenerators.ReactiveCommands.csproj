@@ -22,8 +22,8 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/Avabin/SourceGenerators</PackageProjectUrl>
         <PackageId>SourceGenerators.ReactiveCommands</PackageId>
-        <Version>1.0.14</Version>
-        <PackageVersion>1.0.14</PackageVersion>
+        <Version>1.0.15</Version>
+        <PackageVersion>1.0.15</PackageVersion>
         <Description>Source generator to generate ReactiveCommands from methods</Description>
         <Authors>Avabin</Authors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
