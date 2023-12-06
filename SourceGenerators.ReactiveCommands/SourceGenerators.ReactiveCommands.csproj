@@ -5,6 +5,9 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
+        <RepositoryUrl>https://github.com/Avabin/SourceGenerators</RepositoryUrl>
+        <RepositoryType>GitHub</RepositoryType>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,9 +15,6 @@
       <PackageReference Include="ReactiveUI" Version="18.4.20" />
       <PackageReference Include="SourceGenerators.ReactiveCommands.Core" Version="1.0.3" />
     </ItemGroup>
-    <PropertyGroup>
-        <IncludeBuildOutput>false</IncludeBuildOutput>
-    </PropertyGroup>
     <ItemGroup>
         <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     </ItemGroup>
@@ -28,5 +28,4 @@
         <Authors>Avabin</Authors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
-
 </Project>

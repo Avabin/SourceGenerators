@@ -26,7 +26,7 @@ jobs:
       run: |
         for file in **/*.nupkg
         do
-          dotnet nuget push $file --api-key ${{ secrets.NUGET_TOKEN }} --source https://api.nuget.org/v3/index.json
-          dotnet nuget push $file --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/Avabin/index.json
+          dotnet nuget push $file --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate --source https://api.nuget.org/v3/index.json
+          dotnet nuget push $file --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate --source https://nuget.pkg.github.com/Avabin/index.json
         done
       
