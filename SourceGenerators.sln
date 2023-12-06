@@ -4,11 +4,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceGenerators.ReactiveCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceGenerators.ReactiveCommands.Core", "SourceGenerators.ReactiveCommands.Core\SourceGenerators.ReactiveCommands.Core.csproj", "{3ABB9B9D-4D4B-4496-A544-988450E064D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceGenerators.Orleans", "SourceGenerators.Orleans\SourceGenerators.Orleans.csproj", "{3790A149-95E8-4A99-AEDA-5668BD443424}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceGenerators.Orleans.DataContract", "SourceGenerators.Orleans.DataContract\SourceGenerators.Orleans.DataContract.csproj", "{D3154399-13B3-4FF1-B913-EE9F12A56E8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceGenerators.Orleans.Core", "SourceGenerators.Orleans.Core\SourceGenerators.Orleans.Core.csproj", "{F9D54CF4-0C31-43A0-9DBB-4BCA5BBE5E2E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestViewModels", "TestViewModels\TestViewModels.csproj", "{3B5E6349-1103-459B-9E89-1F957BA43D2A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceGenerators.Orleans.DataContract.Core", "SourceGenerators.Orleans.DataContract.Core\SourceGenerators.Orleans.DataContract.Core.csproj", "{080486E1-5906-41DF-88A0-07277FF7C504}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,17 +22,13 @@ Global
 		{3ABB9B9D-4D4B-4496-A544-988450E064D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3ABB9B9D-4D4B-4496-A544-988450E064D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3ABB9B9D-4D4B-4496-A544-988450E064D6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3790A149-95E8-4A99-AEDA-5668BD443424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3790A149-95E8-4A99-AEDA-5668BD443424}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3790A149-95E8-4A99-AEDA-5668BD443424}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3790A149-95E8-4A99-AEDA-5668BD443424}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F9D54CF4-0C31-43A0-9DBB-4BCA5BBE5E2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9D54CF4-0C31-43A0-9DBB-4BCA5BBE5E2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9D54CF4-0C31-43A0-9DBB-4BCA5BBE5E2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9D54CF4-0C31-43A0-9DBB-4BCA5BBE5E2E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B5E6349-1103-459B-9E89-1F957BA43D2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B5E6349-1103-459B-9E89-1F957BA43D2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B5E6349-1103-459B-9E89-1F957BA43D2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B5E6349-1103-459B-9E89-1F957BA43D2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3154399-13B3-4FF1-B913-EE9F12A56E8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3154399-13B3-4FF1-B913-EE9F12A56E8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3154399-13B3-4FF1-B913-EE9F12A56E8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3154399-13B3-4FF1-B913-EE9F12A56E8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{080486E1-5906-41DF-88A0-07277FF7C504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{080486E1-5906-41DF-88A0-07277FF7C504}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{080486E1-5906-41DF-88A0-07277FF7C504}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{080486E1-5906-41DF-88A0-07277FF7C504}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
